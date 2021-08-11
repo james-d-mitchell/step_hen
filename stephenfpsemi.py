@@ -6,8 +6,11 @@ class Stephen1:
     def __init__(self):
         self.A = ""
         self.R = []
+        self.clear()
+
+    def clear(self):
         self.nodes = [0]
-        self.edges = None
+        self.edges = [[None] * len(self.A)]
         self.kappa = []
         self.next_node = 1
         self.original_word = None
@@ -61,6 +64,7 @@ class Stephen1:
 
     # New for Stephen1
     def set_linear_graph(self, w: str) -> None:
+        self.clear()
         self.original_word = [self.A.index(a) for a in w]
         current_node = 0
         for a in self.original_word:
@@ -129,9 +133,16 @@ S.add_relation("abab", "aa")
 S.set_linear_graph("bbab")
 S.run()
 assert S.equal_to("bbaaba")
+assert not S.equal_to("")
+assert not S.equal_to("aaaaaaaaaa")
+assert not S.equal_to("bbb")
 S.set_linear_graph("bba")
 S.run()
 assert S.equal_to("bbabb")
+assert S.equal_to("bba")
+assert not S.equal_to("bbb")
+assert not S.equal_to("a")
+assert not S.equal_to("ab")
 S.set_linear_graph("bbaab")
 S.run()
 assert S.equal_to("bbaba")
@@ -177,4 +188,4 @@ S.add_relation("cd", "c")
 S.add_relation("dc", "c")
 S.set_linear_graph("dabdaaadabab")
 S.run()
-S.equal_to("abdadcaca")
+assert S.equal_to("abdadcaca")
