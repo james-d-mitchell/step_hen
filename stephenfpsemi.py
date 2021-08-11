@@ -47,7 +47,7 @@ class Stephen1:
         for a in range(len(self.A)):
             if self.path(j, a) is not None:
                 if self.path(i, a) is None:
-                    self.edges[i, a] = self.path(j, a)
+                    self.edges[i][a] = self.path(j, a)
                 else:
                     self.kappa.append((self.path(i, a), self.path(j, a)))
         for c in self.nodes:
@@ -120,3 +120,29 @@ assert S.equal_to("a")
 assert S.equal_to("aa")
 assert S.equal_to("aaa")
 assert S.equal_to("aaaa")
+
+S = Stephen1()
+S.set_alphabet("ab")
+S.add_relation("aaa", "a")
+S.add_relation("bbb", "b")
+S.add_relation("abab", "aa")
+S.set_linear_graph("bbab")
+S.run()
+assert S.equal_to("bbaaba")
+S.set_linear_graph("bba")
+S.run()
+assert S.equal_to("bbabb")
+S.set_linear_graph("bbaab")
+S.run()
+assert S.equal_to("bbaba")
+
+S = Stephen1()
+S.set_alphabet("abcdefg")
+S.add_relation("aaaeaa", "abcd")
+S.add_relation("ef", "dg")
+S.set_linear_graph("aaaeaaaeaa")
+S.run()
+assert S.equal_to("aaaeabcd")
+S.set_linear_graph("abcef")
+S.run()
+assert S.equal_to("aaaeaag")
