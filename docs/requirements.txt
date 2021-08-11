@@ -1,0 +1,4 @@
+sphinx_rtd_theme
+sphinx==3.5.4
+sphinx-copybutton==0.3.1
+sphinxcontrib-bibtex==2.2.0

@@ -1,0 +1,10 @@
+*/__pycache__/*
+*egg-info/*
+.coverage
+.ipynb_checkpoints
+.tox/*
+__pycache__/*
+build/
+dist/
+docs/build/*
+htmlcov/*
