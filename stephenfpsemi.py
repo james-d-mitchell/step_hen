@@ -2,18 +2,22 @@
 
 
 class Stephen1:
+    """
+    This class implements Stephen's procedure for (possibly) checking whether
+    an arbitrary word in the free monoid represents the same element of a
+    finitely presented monoid as a fixed word.
+
+    The fixed word is set using the method `init`.
+
+    The alphabet is set using the method `set_alphabet`, and relations can be
+    added using `add_relation`.
+    """
+
     # Directly from ToddCoxeter
     def __init__(self):
         self.A = ""
         self.R = []
         self.clear()
-
-    def clear(self):
-        self.nodes = [0]
-        self.edges = [[None] * len(self.A)]
-        self.kappa = []
-        self.next_node = 1
-        self.original_word = None
 
     def set_alphabet(self, A: str) -> None:
         self.A = A
@@ -34,14 +38,20 @@ class Stephen1:
 
     def path(self, c: int, w: list) -> int:
         w = [w] if not isinstance(w, list) else w
-        for a in w:
-            c = self.edges[c][a]
-            if c is None:
-                return None
-        return c
+        n, i = self.last_node_on_path(c, w)
+        return n if i == len(w) else None
+
+    def last_node_on_path(self, c: int, w) -> int:
+        assert isinstance(w, list) or isinstance(w, int)
+        w = [w] if not isinstance(w, list) else w
+        for i in range(len(w)):
+            d = self.edges[c][w[i]]
+            if d is None:
+                return (c, i)
+            c = d
+        return (c, len(w))
 
     def tc3(self, i: int, j: int) -> bool:
-        """Returns True if i and j are not equal and False if they are equal."""
         if i == j:
             return False
         if i > j:
@@ -63,7 +73,15 @@ class Stephen1:
         return True
 
     # New for Stephen1
-    def set_linear_graph(self, w: str) -> None:
+
+    def clear(self):
+        self.nodes = [0]
+        self.edges = [[None] * len(self.A)]
+        self.kappa = []
+        self.next_node = 1
+        self.original_word = None
+
+    def init(self, w: str) -> None:
         self.clear()
         self.original_word = [self.A.index(a) for a in w]
         current_node = 0
@@ -71,25 +89,13 @@ class Stephen1:
             current_node = self.tc1(current_node, a)
 
     def elementary_expansion(self, n: int, u: list, v: list) -> None:
-        # TODO check that n is a node
         uu = self.path(n, u)
-        vv = self.path(n, v)
         if uu is not None:
-            if vv is not None:
-                if uu != vv:
-                    self.kappa.append((uu, vv))
-            else:
-                i = 0
-                for a in v:
-                    m = self.edges[n][a]
-                    if m is None:
-                        break
-                    n = m
-                    i += 1
-                for a in v[i:]:
-                    n = self.tc1(n, a)
-                self.kappa.append((n, uu))
-        elif vv is not None:
+            n, i = self.last_node_on_path(n, v)
+            for a in v[i:]:
+                n = self.tc1(n, a)
+            self.kappa.append((n, uu))
+        else:
             self.elementary_expansion(n, v, u)
 
     def run(self) -> None:
@@ -111,6 +117,7 @@ class Stephen1:
                 self.tc3(*self.kappa.pop())
 
     def equal_to(self, w: str) -> bool:
+        self.run()
         ww = [self.A.index(a) for a in w]
         return self.path(0, ww) == self.path(0, self.original_word)
 
@@ -118,8 +125,7 @@ class Stephen1:
 S = Stephen1()
 S.set_alphabet("a")
 S.add_relation("aa", "a")
-S.set_linear_graph("aaa")
-S.run()
+S.init("aaa")
 assert S.equal_to("a")
 assert S.equal_to("aa")
 assert S.equal_to("aaa")
@@ -130,32 +136,27 @@ S.set_alphabet("ab")
 S.add_relation("aaa", "a")
 S.add_relation("bbb", "b")
 S.add_relation("abab", "aa")
-S.set_linear_graph("bbab")
-S.run()
+S.init("bbab")
 assert S.equal_to("bbaaba")
 assert not S.equal_to("")
 assert not S.equal_to("aaaaaaaaaa")
 assert not S.equal_to("bbb")
-S.set_linear_graph("bba")
-S.run()
+S.init("bba")
 assert S.equal_to("bbabb")
 assert S.equal_to("bba")
 assert not S.equal_to("bbb")
 assert not S.equal_to("a")
 assert not S.equal_to("ab")
-S.set_linear_graph("bbaab")
-S.run()
+S.init("bbaab")
 assert S.equal_to("bbaba")
 
 S = Stephen1()
 S.set_alphabet("abcdefg")
 S.add_relation("aaaeaa", "abcd")
 S.add_relation("ef", "dg")
-S.set_linear_graph("aaaeaaaeaa")
-S.run()
+S.init("aaaeaaaeaa")
 assert S.equal_to("aaaeabcd")
-S.set_linear_graph("abcef")
-S.run()
+S.init("abcef")
 assert S.equal_to("aaaeaag")
 
 S = Stephen1()
@@ -169,8 +170,7 @@ S.add_relation("bcc", "b")
 S.add_relation("bc", "b")
 S.add_relation("cc", "b")
 S.add_relation("a", "b")
-S.set_linear_graph("abcc")
-S.run()
+S.init("abcc")
 assert S.equal_to("baac")
 
 S = Stephen1()
@@ -186,6 +186,5 @@ S.add_relation("bd", "b")
 S.add_relation("db", "b")
 S.add_relation("cd", "c")
 S.add_relation("dc", "c")
-S.set_linear_graph("dabdaaadabab")
-S.run()
+S.init("dabdaaadabab")
 assert S.equal_to("abdadcaca")
