@@ -14,8 +14,17 @@ class InverseMonoidPresentation:
             result += len(self.A)
         return result
 
+    def char(self, x: int) -> str:
+        if x >= len(self.A):
+            return self.A[x - len(self.A)].upper()
+        else:
+            return self.A[x]
+
     def word(self, w: str) -> list[int]:
         return [self.letter(x) for x in w]
+
+    def string(self, w: list[int]) -> str:
+        return "".join(self.char(x) for x in w)
 
     def inverse(self, x: int) -> int:
         if x < len(self.A):
@@ -26,7 +35,6 @@ class InverseMonoidPresentation:
     def set_alphabet(self, A: str) -> None:
         assert all(x.islower() for x in A)
         self.A = A
-        self.edges = [[None] * 2 * len(A)]
 
     def add_relation(self, u: str, v: str) -> None:
         assert all(x in self.A for x in u.lower())
@@ -34,6 +42,13 @@ class InverseMonoidPresentation:
         u = [self.letter(x) for x in u]
         v = [self.letter(x) for x in v]
         self.R.append((u, v))
+
+
+P = InverseMonoidPresentation()
+P.set_alphabet("abc")
+
+assert P.word("abcAbC") == [0, 1, 2, 3, 1, 5]
+assert P.string([0, 1, 2, 3, 1, 5]) == "abcAbC"
 
 
 class SchutzenbergerGraph:
@@ -143,6 +158,14 @@ class SchutzenbergerGraph:
         self.run()
         w = [self.presn.letter(x) for x in w]
         return self.path(0, w) == self.path(0, self.rep)
+
+    def __contains__(self, w: str) -> bool:
+        self.run()
+        w = [self.presn.letter(x) for x in w]
+        return self.path(0, w) is not None
+
+    def size(self) -> int:
+        return len(self.nodes)
 
 
 # Test case 1
