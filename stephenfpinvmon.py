@@ -136,10 +136,12 @@ class Stephen2:
                 self.tc3(*self.kappa.pop())
 
     def accepts(self, w: str) -> bool:
+        self.run()
         w = [self.letter(x) for x in w]
         return self.path(0, w) == self.path(0, self.original_word)
 
 
+# Test case 1
 S = Stephen2()
 S.set_alphabet("abc")
 S.init("aBcAbC")
@@ -150,35 +152,61 @@ assert S.accepts("aBcAbC")
 S.init("BaAbaBcAbC")
 assert S.accepts("aBcAbC")
 
+# Test case 2
 S = Stephen2()
 S.set_alphabet("abc")
 S.init("aBbcaABAabCc")
 assert S.path(0, [S.letter(x) for x in "aBbcaABAabCc"]) == 3
-print(S.edges)
 
-#
-# S = Stephen2()
-# S.set_alphabet("xy")
-# S.init("xxxyyy")
-# assert S.accepts("xxxyyyYYYXXXxxxyyy")
-# S.init("xxxyyyYYYXXXxxxyyy")
-# assert S.accepts("xxxyyy")
-# assert not S.accepts("xxx")
+# Test case 3
+S = Stephen2()
+S.set_alphabet("xy")
+S.init("xxxyyy")
+assert S.accepts("xxxyyyYYYXXXxxxyyy")
+S.init("xxxyyyYYYXXXxxxyyy")
+assert S.accepts("xxxyyy")
+assert not S.accepts("xxx")
 
-# S = Stephen2()
-# S.set_alphabet("xy")
-# # S.add_relation("xyxy", "xy")
-# # S.add_relation("xyXxyX", "xyX")
-# S.init("xyXyy")
-# S.run()
-# # print(S.path(0, [S.letter(x) for x in "xxxxxxxxxxxxx"]))
-# print(S.path(0, [S.letter(x) for x in "xyXyy"]))
-# assert S.accepts("y")
-# print(S.path(0, [S.letter(x) for x in "xyXyy"]))
-# assert S.path(0, [S.letter(x) for x in "xyXyy"]) is not None
-# print(S.path(0, [S.letter(x) for x in "xyXyy"]))
-# assert S.path(0, [S.letter(x) for x in "xyXyy"]) == 0
-# print(S.path(0, [S.letter(x) for x in "xyXyy"]))
-# # assert S.path(0, [S.letter(x) for x in "xxxxxxxxxxxxx"]) == 5
-# assert S.accepts("xxxxxxxxxxxxx")
-# assert S.accepts("xyXxyxyxyxyxyXyy")
+# Test case 4
+S = Stephen2()
+S.set_alphabet("xy")
+S.add_relation("xyXxyX", "xyX")
+S.init("xyXyy")
+
+for i in range(10):
+    assert S.accepts("x" + "y" * i + "Xyy")
+assert not S.accepts("xXyx")
+assert not S.accepts("xXxx")
+assert not S.accepts("xXxy")
+assert not S.accepts("xXxX")
+assert not S.accepts("xXyY")
+
+assert S.path(0, [S.letter(x) for x in "xyXyy"]) == 5
+assert S.path(0, [S.letter(x) for x in "xyXyy"]) == 5
+
+assert S.nodes == [0, 1, 4, 5]
+assert S.edges == [
+    [1, 4, None, None],
+    [None, 1, 0, 1],
+    [None, 1, 3, 1],
+    [1, 4, None, None],
+    [None, 5, None, 0],
+    [None, None, None, 4],
+    [None, None, 3, 2],
+    [6, None, None, None],
+]
+
+# Test case 5
+S = Stephen2()
+S.set_alphabet("xy")
+S.add_relation("xyXxyX", "xyX")
+S.add_relation("xyxy", "xy")
+S.init("xyXyy")
+
+assert S.accepts("y")
+assert S.accepts("xxxxxxxxxxxxx")
+assert S.accepts("xyXxyxyxyxyxyXyy")
+
+assert S.nodes == [0]
+assert S.edges[0] == [0, 0, 0, 0]
+assert S.path(0, [S.letter(x) for x in "xyXyy"]) == 0
