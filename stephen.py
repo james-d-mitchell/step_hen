@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-from stephenfpinvmon import InverseMonoidPresentation, SchutzenbergerGraph
+from schutzenbergergraph import InverseMonoidPresentation, SchutzenbergerGraph
+from wordgraph import WordGraph
 
 
 class Stephen:

@@ -1,47 +1,6 @@
 #!/usr/bin/env python3
 
-
-class InverseMonoidPresentation:
-    def __init__(self):
-        self.A = ""
-        self.R = []
-
-    def letter(self, x: str) -> int:
-        assert len(x) == 1
-        assert x[0].lower() in self.A
-        result = self.A.index(x.lower())
-        if not x.islower():
-            result += len(self.A)
-        return result
-
-    def char(self, x: int) -> str:
-        if x >= len(self.A):
-            return self.A[x - len(self.A)].upper()
-        else:
-            return self.A[x]
-
-    def word(self, w: str) -> list[int]:
-        return [self.letter(x) for x in w]
-
-    def string(self, w: list[int]) -> str:
-        return "".join(self.char(x) for x in w)
-
-    def inverse(self, x: int) -> int:
-        if x < len(self.A):
-            return x + len(self.A)
-        else:
-            return x - len(self.A)
-
-    def set_alphabet(self, A: str) -> None:
-        assert all(x.islower() for x in A)
-        self.A = A
-
-    def add_relation(self, u: str, v: str) -> None:
-        assert all(x in self.A for x in u.lower())
-        assert all(x in self.A for x in v.lower())
-        u = [self.letter(x) for x in u]
-        v = [self.letter(x) for x in v]
-        self.R.append((u, v))
+from presentation import InverseMonoidPresentation
 
 
 P = InverseMonoidPresentation()
@@ -54,7 +13,7 @@ assert P.string([0, 1, 2, 3, 1, 5]) == "abcAbC"
 class SchutzenbergerGraph:
     """
     This class implements Stephen's procedure for (possibly) checking whether
-    an arbitrary word in the free monoid represents the same element of
+    an arbitrary word in the free inverse monoid represents the same element of
     a finitely presented inverse monoid as a fixed word.
 
     Generators are represented by lower case letters and their inverses by
