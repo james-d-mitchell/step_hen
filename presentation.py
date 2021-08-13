@@ -43,10 +43,8 @@ class InverseMonoidPresentation(MonoidPresentation):
         MonoidPresentation.__init__(self)
 
     def inverse(self, x: int) -> int:
-        if x < len(self.A):
-            return x + len(self.A)
-        else:
-            return x - len(self.A)
+        n = len(self.A) // 2
+        return x + n if x < n else x - n
 
     def set_alphabet(self, A: str) -> None:
         assert all(x.islower() for x in A)

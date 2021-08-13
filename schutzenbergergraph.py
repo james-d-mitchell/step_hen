@@ -1,16 +1,10 @@
 #!/usr/bin/env python3
 
 from presentation import InverseMonoidPresentation
+from wordgraph import WordGraph
 
 
-P = InverseMonoidPresentation()
-P.set_alphabet("abc")
-
-assert P.word("abcAbC") == [0, 1, 2, 3, 1, 5]
-assert P.string([0, 1, 2, 3, 1, 5]) == "abcAbC"
-
-
-class SchutzenbergerGraph:
+class SchutzenbergerGraph(WordGraph):
     """
     This class implements Stephen's procedure for (possibly) checking whether
     an arbitrary word in the free inverse monoid represents the same element of
@@ -26,92 +20,12 @@ class SchutzenbergerGraph:
     """
 
     def __init__(self, presn: InverseMonoidPresentation, rep: str):
-        self.presn = presn
-        self.nodes = [0]
-        self.edges = [[None] * 2 * len(self.presn.A)]
-        self.kappa = []
-        self.next_node = 1
-        self.rep = [self.presn.letter(a) for a in rep]
-        current_node = 0
-        for a in self.rep:
-            current_node = self.tc1(current_node, a)
+        WordGraph.__init__(self, presn, rep)
 
-    def path(self, c: int, w: str) -> int:
-        return self.path(c, self.presn.word(w))
-
-    def path(self, c: int, w: list) -> int:
-        w = [w] if not isinstance(w, list) else w
-        n, i = self.last_node_on_path(c, w)
-        return n if i == len(w) else None
-
-    def last_node_on_path(self, c: int, w) -> int:
-        assert isinstance(w, list) or isinstance(w, int)
-        w = [w] if not isinstance(w, list) else w
-        for i in range(len(w)):
-            d = self.edges[c][w[i]]
-            if d is None:
-                return (c, i)
-            c = d
-        return (c, len(w))
-
-    def tc1(self, c: int, a: int) -> int:
-        if self.edges[c][a] is None:
-            self.nodes.append(self.next_node)
-            self.edges[c][a] = self.next_node
-            self.edges.append([None] * 2 * len(self.presn.A))
-            self.edges[self.next_node][self.presn.inverse(a)] = c
-            self.next_node += 1
-        return self.edges[c][a]
-
-    def tc3(self, i: int, j: int) -> bool:
-        if i == j:
-            return False
-        if i > j:
-            i, j = j, i
-
-        for a in range(len(self.edges[0])):
-            if self.path(j, a) is not None:
-                if self.path(i, a) is None:
-                    self.edges[i][a] = self.path(j, a)
-                else:
-                    self.kappa.append((self.path(i, a), self.path(j, a)))
-        for c in self.nodes:
-            for a in range(len(self.edges[0])):
-                if self.path(c, a) == j:
-                    self.edges[c][a] = i
-        self.kappa = [[i, l] if k == j else [k, l] for k, l in self.kappa]
-        self.kappa = [[k, i] if l == j else [k, l] for k, l in self.kappa]
-        self.nodes.remove(j)
-        return True
-
-    # From Stephen1 almost
-    def elementary_expansion(self, n: int, u: list, v: list) -> None:
-        uu = self.path(n, u)
-        if uu is not None:
-            n, i = self.last_node_on_path(n, v)
-            for a in v[i:]:
-                n = self.tc1(n, a)
-            self.kappa.append((n, uu))
-        else:
-            self.elementary_expansion(n, v, u)
-
-    def run(self) -> None:
-        while True:
-            n, u, v = next(
-                (
-                    (n, u, v)
-                    for n in self.nodes
-                    for u, v in self.presn.R
-                    if self.path(n, u) != self.path(n, v)
-                ),
-                (None, None, None),
-            )
-            if n is None:
-                break
-            self.elementary_expansion(n, u, v)
-            assert self.path(n, u) is not None and self.path(n, v) is not None
-            while len(self.kappa) != 0:
-                self.tc3(*self.kappa.pop())
+    def target(self, c: int, a: int) -> int:
+        result = WordGraph.target(self, c, a)
+        self.edges[self.next_node - 1][self.presn.inverse(a)] = c
+        return result
 
     def accepts(self, w: str) -> bool:
         self.run()
@@ -123,8 +37,8 @@ class SchutzenbergerGraph:
         w = [self.presn.letter(x) for x in w]
         return self.path(0, w) is not None
 
-    def size(self) -> int:
-        return len(self.nodes)
+    def equal_to(self) -> None:
+        pass
 
 
 # Test case 1

@@ -27,6 +27,9 @@ class WordGraph:
         for a in self.rep:
             current_node = self.target(current_node, a)
 
+    def number_of_nodes(self) -> int:
+        return len(self.nodes)
+
     def target(self, c: int, a: int) -> int:
         if self.edges[c][a] is None:
             self.nodes.append(self.next_node)
@@ -35,7 +38,7 @@ class WordGraph:
             self.next_node += 1
         return self.edges[c][a]
 
-    def last_node_on_path(self, root: int, word: Union[list, int]) -> int:
+    def last_node_on_path(self, root: int, word: Union[list[int], int]) -> int:
         assert isinstance(word, list) or isinstance(word, int)
         word = [word] if not isinstance(word, list) else word
         for i in range(len(word)):
@@ -45,7 +48,7 @@ class WordGraph:
             root = node
         return (root, len(word))
 
-    def path(self, c: int, w: list) -> int:
+    def path(self, c: int, w: list[int]) -> int:
         w = [w] if not isinstance(w, list) else w
         n, i = self.last_node_on_path(c, w)
         return n if i == len(w) else None
@@ -76,7 +79,7 @@ class WordGraph:
         ]
         self.nodes.remove(node2)
 
-    def elementary_expansion(self, n: int, u: list, v: list) -> None:
+    def elementary_expansion(self, n: int, u: list[int], v: list[int]) -> None:
         uu = self.path(n, u)
         if uu is not None:
             n, i = self.last_node_on_path(n, v)
