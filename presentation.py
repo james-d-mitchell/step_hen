@@ -23,12 +23,6 @@ class MonoidPresentation:
     def string(self, w: list[int]) -> str:
         return "".join(self.char(x) for x in w)
 
-    def inverse(self, x: int) -> int:
-        if x < len(self.A):
-            return x + len(self.A)
-        else:
-            return x - len(self.A)
-
     def set_alphabet(self, A: str) -> None:
         self.A = A
 
