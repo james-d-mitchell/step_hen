@@ -3,7 +3,7 @@ from wordgraph import WordGraph, MonoidPresentation
 
 
 class TestWordGraph(unittest.TestCase):
-    def test_1(self):
+    def test_001(self):
         P = MonoidPresentation()
         P.set_alphabet("a")
         P.add_relation("aa", "a")
@@ -14,7 +14,7 @@ class TestWordGraph(unittest.TestCase):
         self.assertTrue(S.equal_to("aaa"))
         self.assertTrue(S.equal_to("aaaa"))
 
-    def test_2(self):
+    def test_002(self):
         P = MonoidPresentation()
         P.set_alphabet("ab")
         P.add_relation("aaa", "a")
@@ -37,7 +37,7 @@ class TestWordGraph(unittest.TestCase):
         S = WordGraph(P, "bbaab")
         self.assertTrue(S.equal_to("bbaba"))
 
-    def test_3(self):
+    def test_003(self):
         P = MonoidPresentation()
         P.set_alphabet("abcdefg")
         P.add_relation("aaaeaa", "abcd")
@@ -49,7 +49,7 @@ class TestWordGraph(unittest.TestCase):
         S = WordGraph(P, "abcef")
         self.assertTrue(S.equal_to("aaaeaag"))
 
-    def test_4(self):
+    def test_004(self):
         P = MonoidPresentation()
         P.set_alphabet("abc")
         P.add_relation("ab", "ba")
@@ -65,7 +65,7 @@ class TestWordGraph(unittest.TestCase):
         S = WordGraph(P, "abcc")
         self.assertTrue(S.equal_to("baac"))
 
-    def test_5(self):
+    def test_005(self):
         P = MonoidPresentation()
         P.set_alphabet("abcd")
         P.add_relation("bb", "c")
