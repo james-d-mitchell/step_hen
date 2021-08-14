@@ -1,3 +1,18 @@
+# -*- coding: utf-8 -*-
+
+# Copyright (c) 2021, J. D. Mitchell + Maria Tsalakou
+#
+# Distributed under the terms of the GPL license version 3.
+#
+# The full license is in the file LICENSE, distributed with this software.
+
+"""
+This module contains the single class :py:class:`SchutzenbergerGraph` which
+implements a version of Stephen's procedure which can be used to check whether
+two words in the free monoid represent the same element of a finitely presented
+inverse monoid.
+"""
+
 from presentation import InverseMonoidPresentation
 from wordgraph import WordGraph
 

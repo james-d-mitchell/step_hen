@@ -8,3 +8,7 @@ coverage:
 	@coverage run --source . --omit="tests/*" -m py.test
 	@coverage html
 	@echo "See: htmlcov/index.html"
+
+
+doc: 
+	@cd docs && make html

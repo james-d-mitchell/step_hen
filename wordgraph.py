@@ -1,4 +1,16 @@
-#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+# Copyright (c) 2021, J. D. Mitchell + Maria Tsalakou
+#
+# Distributed under the terms of the GPL license version 3.
+#
+# The full license is in the file LICENSE, distributed with this software.
+
+"""
+This module contains the single class :py:class:`WordGraph` which
+implements a version of Stephen's procedure which can be used to check whether
+two words in the free monoid represent the same element of a finitely presented monoid.
+"""
 
 from typing import Union
 from presentation import MonoidPresentation
@@ -10,7 +22,7 @@ class WordGraph:
     an arbitrary word in the free monoid represents the same element of a
     finitely presented monoid as a fixed word.
 
-    The fixed word is set using the method `init`.
+    The finite monoid presentation and fixed word are set at construction.
 
     The alphabet is set using the method `set_alphabet`, and relations can be
     added using `add_relation`.
