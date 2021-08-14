@@ -12,3 +12,6 @@ coverage:
 
 doc: 
 	@cd docs && make html
+
+clean:
+	rm -rf docs/build

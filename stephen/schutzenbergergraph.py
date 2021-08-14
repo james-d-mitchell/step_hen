@@ -13,8 +13,8 @@ two words in the free monoid represent the same element of a finitely presented
 inverse monoid.
 """
 
-from presentation import InverseMonoidPresentation
-from wordgraph import WordGraph
+from stephen.presentation import InverseMonoidPresentation
+from stephen.wordgraph import WordGraph
 
 
 class SchutzenbergerGraph(WordGraph):

@@ -7,7 +7,7 @@
 WordGraph
 =========
 
-.. automodule:: wordgraph
+.. automodule:: stephen.wordgraph
 
 .. autoclass:: WordGraph
    :members:

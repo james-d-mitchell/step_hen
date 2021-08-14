@@ -1,7 +1,7 @@
+*/__pycache__/*
 *egg-info/*
 .coverage
 .tox/*
 __pycache__/*
 docs/build/*
 htmlcov/*
-tests/__pycache__/*

@@ -13,7 +13,7 @@ two words in the free monoid represent the same element of a finitely presented 
 """
 
 from typing import Union
-from presentation import MonoidPresentation
+from stephen.presentation import MonoidPresentation
 
 
 class WordGraph:

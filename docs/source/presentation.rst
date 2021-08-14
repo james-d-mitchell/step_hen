@@ -7,7 +7,7 @@
 Presentations
 =============
 
-.. automodule:: presentation
+.. automodule:: stephen.presentation
 
 .. autoclass:: MonoidPresentation 
    :members:
