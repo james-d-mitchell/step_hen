@@ -12,7 +12,7 @@ implements a version of Stephen's procedure which can be used to check whether
 two words in the free monoid represent the same element of a finitely presented monoid.
 """
 
-from typing import Union
+from typing import Union, List
 from stephen.presentation import MonoidPresentation
 
 
@@ -50,7 +50,7 @@ class WordGraph:
             self.next_node += 1
         return self.edges[c][a]
 
-    def last_node_on_path(self, root: int, word: Union[list[int], int]) -> int:
+    def last_node_on_path(self, root: int, word: Union[List[int], int]) -> int:
         assert isinstance(word, list) or isinstance(word, int)
         word = [word] if not isinstance(word, list) else word
         for i in range(len(word)):
@@ -60,7 +60,7 @@ class WordGraph:
             root = node
         return (root, len(word))
 
-    def path(self, c: int, w: list[int]) -> int:
+    def path(self, c: int, w: List[int]) -> int:
         w = [w] if not isinstance(w, list) else w
         n, i = self.last_node_on_path(c, w)
         return n if i == len(w) else None
@@ -91,7 +91,7 @@ class WordGraph:
         ]
         self.nodes.remove(node2)
 
-    def elementary_expansion(self, n: int, u: list[int], v: list[int]) -> None:
+    def elementary_expansion(self, n: int, u: List[int], v: List[int]) -> None:
         uu = self.path(n, u)
         if uu is not None:
             n, i = self.last_node_on_path(n, v)

@@ -10,6 +10,8 @@
 TODO
 """
 
+import typing
+
 
 class MonoidPresentation:
     def __init__(self):
@@ -25,10 +27,10 @@ class MonoidPresentation:
         assert x < len(self.A)
         return self.A[x]
 
-    def word(self, w: str) -> list[int]:
+    def word(self, w: str) -> typing.List[int]:
         return [self.letter(x) for x in w]
 
-    def string(self, w: list[int]) -> str:
+    def string(self, w: typing.List[int]) -> str:
         return "".join(self.char(x) for x in w)
 
     def set_alphabet(self, A: str) -> None:
