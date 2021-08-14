@@ -16,6 +16,13 @@ import sys
 sys.path.insert(0, os.path.abspath("../../"))
 import sphinx_rtd_theme
 
+on_rtd = os.environ.get("READTHEDOCS", None) == "True"
+if on_rtd:
+    subprocess.call(
+        "cd .. && make html",
+        shell=True,
+    )
+
 
 # -- Project information -----------------------------------------------------
 
