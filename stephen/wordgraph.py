@@ -24,11 +24,17 @@ class WordGraph:
 
     The finite monoid presentation and fixed word are set at construction.
 
-    The alphabet is set using the method `set_alphabet`, and relations can be
-    added using `add_relation`.
+    The alphabet is set using the method :py:meth:`set_alphabet`, and relations
+    can be added using :py:meth:`add_relation`.
     """
 
     def __init__(self, presn: MonoidPresentation, rep: str):
+        """
+        Construct from a monoid presentation and a representative.
+
+        :param presn: the monoid presentation.
+        :param rep: the representative.
+        """
         self.presn = presn
         self.nodes = [0]
         self.edges = [[None] * len(self.presn.A)]
@@ -36,53 +42,136 @@ class WordGraph:
         self.next_node = 1
         self.rep = [self.presn.letter(a) for a in rep]
         current_node = 0
-        for a in self.rep:
-            current_node = self.target(current_node, a)
+        for letter in self.rep:
+            current_node = self.target(current_node, letter)
 
     def number_of_nodes(self) -> int:
+        """
+        Returns the number of nodes in the graph.
+
+        :parameters: ``None``
+        :returns: An ``int``.
+        """
         return len(self.nodes)
 
-    def target(self, c: int, a: int) -> int:
-        if self.edges[c][a] is None:
+    def target(self, node: int, letter: int) -> int:
+        """
+        Returns the target node of the edge with source ``node`` and label
+        ``letter``, if it exists, and adds a new node and edge if it does not.
+
+        :param node: the source node.
+        :param letter: the edge label.
+        :returns: An ``int``.
+        """
+        if self.edges[node][letter] is None:
             self.nodes.append(self.next_node)
-            self.edges[c][a] = self.next_node
+            self.edges[node][letter] = self.next_node
             self.edges.append([None] * len(self.presn.A))
             self.next_node += 1
-        return self.edges[c][a]
+        return self.edges[node][letter]
 
-    def last_node_on_path(self, root: int, word: Union[List[int], int]) -> int:
-        assert isinstance(word, list) or isinstance(word, int)
+    def last_node_on_path(
+        self, root: int, word: Union[List[int], int]
+    ) -> Tuple[int, int]:
+        """
+        Returns the last node on the path starting at ``root`` labelled by
+        a prefix of ``word``.
+
+        :param root: the root node.
+        :param word: the word.
+        :returns:
+           A tuple consisting of the last node on the path and the
+           corresponding index in ``word``.
+        """
+        assert isinstance(word, (list, int))
         word = [word] if not isinstance(word, list) else word
-        for i in range(len(word)):
-            node = self.edges[root][word[i]]
+        for i, letter in enumerate(word):
+            node = self.edges[root][letter]
             if node is None:
                 return (root, i)
             root = node
         return (root, len(word))
 
-    def path(self, c: int, w: List[int]) -> int:
-        w = [w] if not isinstance(w, list) else w
-        n, i = self.last_node_on_path(c, w)
-        return n if i == len(w) else None
+    def path(self, node: int, word: List[int]) -> int:
+        """
+        Returns the target node on the path starting at ``root`` labelled by
+        ``word`` if such a node exists and ``None`` otherwise.
 
-    def merge_nodes(self, node1: int, node2: int) -> None:
+        :param root: the root node.
+        :param word: the word.
+        :returns: An ``int``.
+        """
+        word = [word] if not isinstance(word, list) else word
+        node, index = self.last_node_on_path(node, word)
+        return node if index == len(word) else None
+
+    def run(self) -> None:
+        """
+        Runs the algorithm.
+        """
+        while True:
+            node, word1, word2 = next(
+                (
+                    (node, word1, word2)
+                    for node in self.nodes
+                    for word1, word2 in self.presn.R
+                    if self.path(node, word1) != self.path(node, word2)
+                ),
+                (None, None, None),
+            )
+            if node is None:
+                break
+            self.__elementary_expansion(node, word1, word2)
+            assert (
+                self.path(node, word1) is not None
+                and self.path(node, word2) is not None
+            )
+            while len(self.kappa) != 0:
+                self.__merge_nodes(*self.kappa.pop())
+
+    def equal_to(self, word: str) -> bool:
+        """
+        Returns ``True`` if the argument is equal to the word used to construct
+        this instance, and ``False`` if it does not.
+
+        :param word: the word.
+        :returns: a ``bool``.
+        """
+        self.run()
+        return self.path(0, self.presn.word(word)) == self.path(0, self.rep)
+
+    def __elementary_expansion(
+        self, node: int, word1: List[int], word2: List[int]
+    ) -> None:
+        target1 = self.path(node, word1)
+        if target1 is not None:
+            node, i = self.last_node_on_path(node, word2)
+            for letter in word2[i:]:
+                node = self.target(node, letter)
+            self.kappa.append((node, target1))
+        else:
+            self.__elementary_expansion(  # pylint: disable=arguments-out-of-order
+                node, word2, word1
+            )
+
+    def __merge_nodes(self, node1: int, node2: int) -> None:
         if node1 == node2:
             return
         if node1 > node2:
             node1, node2 = node2, node1
 
-        for a in range(len(self.presn.A)):
-            if self.path(node2, a) is not None:
-                if self.path(node1, a) is None:
-                    self.edges[node1][a] = self.path(node2, a)
+        for letter in range(len(self.presn.A)):
+            if self.path(node2, letter) is not None:
+                if self.path(node1, letter) is None:
+                    self.edges[node1][letter] = self.path(node2, letter)
                 else:
                     self.kappa.append(
-                        (self.path(node1, a), self.path(node2, a))
+                        (self.path(node1, letter), self.path(node2, letter))
                     )
-        for c in self.nodes:
-            for a in range(len(self.presn.A)):
-                if self.path(c, a) == node2:
-                    self.edges[c][a] = node1
+        for node in self.nodes:
+            for letter in range(len(self.presn.A)):
+                if self.path(node, letter) == node2:
+                    self.edges[node][letter] = node1
         self.kappa = [
             [node1, l] if k == node2 else [k, l] for k, l in self.kappa
         ]
@@ -90,35 +179,3 @@ class WordGraph:
             [k, node1] if l == node2 else [k, l] for k, l in self.kappa
         ]
         self.nodes.remove(node2)
-
-    def elementary_expansion(self, n: int, u: List[int], v: List[int]) -> None:
-        uu = self.path(n, u)
-        if uu is not None:
-            n, i = self.last_node_on_path(n, v)
-            for a in v[i:]:
-                n = self.target(n, a)
-            self.kappa.append((n, uu))
-        else:
-            self.elementary_expansion(n, v, u)
-
-    def run(self) -> None:
-        while True:
-            n, u, v = next(
-                (
-                    (n, u, v)
-                    for n in self.nodes
-                    for u, v in self.presn.R
-                    if self.path(n, u) != self.path(n, v)
-                ),
-                (None, None, None),
-            )
-            if n is None:
-                break
-            self.elementary_expansion(n, u, v)
-            assert self.path(n, u) is not None and self.path(n, v) is not None
-            while len(self.kappa) != 0:
-                self.merge_nodes(*self.kappa.pop())
-
-    def equal_to(self, w: str) -> bool:
-        self.run()
-        return self.path(0, self.presn.word(w)) == self.path(0, self.rep)

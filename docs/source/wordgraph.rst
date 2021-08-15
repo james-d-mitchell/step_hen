@@ -11,6 +11,7 @@ WordGraph
 
 .. autoclass:: WordGraph
    :members:
+   :exclude-members: run, target
 
    .. automethod:: __init__
 
