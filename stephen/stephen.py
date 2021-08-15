@@ -53,13 +53,15 @@ class Stephen:
         if self._finished:
             return
         for sg1 in self._orbit:
-            w = sg1.rep
-            for x in range(len(self._presn.A)):
-                xw = [x] + w
-                sg_xw = SchutzenbergerGraph(self._presn, self._presn.string(xw))
+            word = sg1.rep
+            for letter in range(len(self._presn.alphabet)):
+                rep = [letter] + word
+                sg_xw = SchutzenbergerGraph(
+                    self._presn, self._presn.string(rep)
+                )
                 for sg2 in self._orbit:
                     if (
-                        self._presn.string(xw) in sg2
+                        self._presn.string(rep) in sg2
                         and self._presn.string(sg2.rep) in sg_xw
                     ):
                         break
@@ -97,8 +99,8 @@ class Stephen:
         """
         self.__run()
         result = 0
-        for sg in self._orbit:
-            result += sg.number_of_nodes()
+        for schutz_graph in self._orbit:
+            result += schutz_graph.number_of_nodes()
         return result
 
     def number_of_r_classes(self) -> int:

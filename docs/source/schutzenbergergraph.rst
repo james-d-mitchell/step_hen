@@ -11,6 +11,7 @@ SchutzenbergerGraph
 
 .. autoclass:: SchutzenbergerGraph
    :members:
+   :exclude-members: target
 
    .. automethod:: __init__
 

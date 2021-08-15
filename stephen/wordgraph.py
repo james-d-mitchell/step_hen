@@ -9,7 +9,8 @@
 """
 This module contains the single class :py:class:`WordGraph` which
 implements a version of Stephen's procedure which can be used to check whether
-two words in the free monoid represent the same element of a finitely presented monoid.
+two words in the free monoid represent the same element of a finitely presented
+monoid.
 """
 
 from typing import Union, List, Tuple
@@ -24,8 +25,6 @@ class WordGraph:
 
     The finite monoid presentation and fixed word are set at construction.
 
-    The alphabet is set using the method :py:meth:`set_alphabet`, and relations
-    can be added using :py:meth:`add_relation`.
     """
 
     def __init__(self, presn: MonoidPresentation, rep: str):
@@ -37,7 +36,7 @@ class WordGraph:
         """
         self.presn = presn
         self.nodes = [0]
-        self.edges = [[None] * len(self.presn.A)]
+        self.edges = [[None] * len(self.presn.alphabet)]
         self.kappa = []
         self.next_node = 1
         self.rep = [self.presn.letter(a) for a in rep]
@@ -66,7 +65,7 @@ class WordGraph:
         if self.edges[node][letter] is None:
             self.nodes.append(self.next_node)
             self.edges[node][letter] = self.next_node
-            self.edges.append([None] * len(self.presn.A))
+            self.edges.append([None] * len(self.presn.alphabet))
             self.next_node += 1
         return self.edges[node][letter]
 
@@ -114,20 +113,20 @@ class WordGraph:
                 (
                     (node, word1, word2)
                     for node in self.nodes
-                    for word1, word2 in self.presn.R
+                    for word1, word2 in self.presn.relations
                     if self.path(node, word1) != self.path(node, word2)
                 ),
                 (None, None, None),
             )
             if node is None:
                 break
-            self.__elementary_expansion(node, word1, word2)
+            self.elementary_expansion(node, word1, word2)
             assert (
                 self.path(node, word1) is not None
                 and self.path(node, word2) is not None
             )
             while len(self.kappa) != 0:
-                self.__merge_nodes(*self.kappa.pop())
+                self.merge_nodes(*self.kappa.pop())
 
     def equal_to(self, word: str) -> bool:
         """
@@ -136,13 +135,26 @@ class WordGraph:
 
         :param word: the word.
         :returns: a ``bool``.
+
+        .. warning::
+            The procedure implemented by method may never terminate. In
+            particular, it terminates if and only if the subgraph of the right
+            Cayley graph of the finitely presented monoid induced by those
+            vertices reachable from empty word and from which the
+            representative is reachable is finite.  Even if the induced
+            subgraph is finite, there is no bound on the run time of this
+            method.
         """
         self.run()
         return self.path(0, self.presn.word(word)) == self.path(0, self.rep)
 
-    def __elementary_expansion(
+    def elementary_expansion(
         self, node: int, word1: List[int], word2: List[int]
     ) -> None:
+        """
+        Perform an "elementary expansion" starting at ``node`` using the
+        relation ``(word1, word2)``.
+        """
         target1 = self.path(node, word1)
         if target1 is not None:
             node, i = self.last_node_on_path(node, word2)
@@ -150,17 +162,20 @@ class WordGraph:
                 node = self.target(node, letter)
             self.kappa.append((node, target1))
         else:
-            self.__elementary_expansion(  # pylint: disable=arguments-out-of-order
+            self.elementary_expansion(  # pylint: disable=arguments-out-of-order
                 node, word2, word1
             )
 
-    def __merge_nodes(self, node1: int, node2: int) -> None:
+    def merge_nodes(self, node1: int, node2: int) -> None:
+        """
+        Merge the nodes ``node1`` and ``node2``.
+        """
         if node1 == node2:
             return
         if node1 > node2:
             node1, node2 = node2, node1
 
-        for letter in range(len(self.presn.A)):
+        for letter in range(len(self.presn.alphabet)):
             if self.path(node2, letter) is not None:
                 if self.path(node1, letter) is None:
                     self.edges[node1][letter] = self.path(node2, letter)
@@ -169,7 +184,7 @@ class WordGraph:
                         (self.path(node1, letter), self.path(node2, letter))
                     )
         for node in self.nodes:
-            for letter in range(len(self.presn.A)):
+            for letter in range(len(self.presn.alphabet)):
                 if self.path(node, letter) == node2:
                     self.edges[node][letter] = node1
         self.kappa = [

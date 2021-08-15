@@ -11,10 +11,12 @@ Presentations
 
 .. autoclass:: MonoidPresentation 
    :members:
+   :exclude-members: letter, char, word, string
 
    .. automethod:: __init__
 
 .. autoclass:: InverseMonoidPresentation 
    :members:
+   :exclude-members: inverse
 
    .. automethod:: __init__
