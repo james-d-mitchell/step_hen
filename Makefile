@@ -15,3 +15,6 @@ doc:
 
 clean:
 	rm -rf docs/build
+
+lint: 
+	pylint stephen/*.py
