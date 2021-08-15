@@ -6,7 +6,7 @@
 #
 # The full license is in the file LICENSE, distributed with this software.
 
-"""
+r"""
 This module contains the single class :py:class:`Stephen` which implements a
 version of Stephen's procedure for computing the size and number of
 :math:`\mathscr{R}`-classes of a finitely presented inverse monoid.
@@ -102,7 +102,7 @@ class Stephen:
         return result
 
     def number_of_r_classes(self) -> int:
-        """
+        r"""
         Returns the number of :math:`\mathscr{R}`-classes of the inverse monoid
         defined by the presentation used to define an instance of this type.
 
