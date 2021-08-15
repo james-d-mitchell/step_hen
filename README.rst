@@ -4,7 +4,7 @@ README - stephen - by James D. Mitchell and Maria Tsalakou
 
 ``stephen`` contains a rudimentary implementation of three algorithms of J. B.
 Stephen and Andrew Cutting for finitely presented monoids and inverse monoids
-in python3. These algorithms are can be used to check equality of a fixed word
+in python3. These algorithms can be used to check equality of a fixed word
 with any other word in a finitely presented monoid, or inverse monoid, and to
 compute the structure of a finitely presented inverse monoid. 
 
