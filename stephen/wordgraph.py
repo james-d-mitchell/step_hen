@@ -12,7 +12,7 @@ implements a version of Stephen's procedure which can be used to check whether
 two words in the free monoid represent the same element of a finitely presented monoid.
 """
 
-from typing import Union, List
+from typing import Union, List, Tuple
 from stephen.presentation import MonoidPresentation
 
 
