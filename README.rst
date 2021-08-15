@@ -1,11 +1,11 @@
 .. image:: https://mybinder.org/badge_logo.svg
  :target: https://mybinder.org/v2/gh/james-d-mitchell/stephen/main?filepath=demo.ipynb
 
-**********************************************************
-README - stephen - by James D. Mitchell and Maria Tsalakou
-**********************************************************
+***********************************************************
+README - step_hen - by James D. Mitchell and Maria Tsalakou
+***********************************************************
 
-``stephen`` contains a rudimentary implementation of three algorithms of J. B.
+``step_hen`` contains a rudimentary implementation of three algorithms of J. B.
 Stephen and Andrew Cutting for finitely presented monoids and inverse monoids
 in python3. These algorithms can be used to check equality of a fixed word
 with any other word in a finitely presented monoid, or inverse monoid, and to
@@ -26,4 +26,9 @@ The algorithms are described in the following:
 * Andrew Cutting, "Todd-Coxeter methods for inverse monoids", PhD thesis,
   University of St Andrews (2001) `<http://hdl.handle.net/10023/15052>`_
 
-.. TODO installation
+Installation
+============
+
+You can install ``step_hen`` using pip:
+
+    pip install step_hen
