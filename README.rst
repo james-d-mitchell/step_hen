@@ -1,3 +1,6 @@
+.. image:: https://mybinder.org/badge_logo.svg
+ :target: https://mybinder.org/v2/gh/james-d-mitchell/stephen/main?filepath=demo.ipynb
+
 **********************************************************
 README - stephen - by James D. Mitchell and Maria Tsalakou
 **********************************************************
