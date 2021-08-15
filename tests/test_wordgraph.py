@@ -7,7 +7,7 @@
 # The full license is in the file LICENSE, distributed with this software.
 
 import unittest
-from stephen import WordGraph, MonoidPresentation
+from step_hen import WordGraph, MonoidPresentation
 
 
 class TestWordGraph(unittest.TestCase):

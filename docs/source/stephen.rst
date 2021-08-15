@@ -7,7 +7,7 @@
 Stephen
 =======
 
-.. automodule:: stephen
+.. automodule:: step_hen
 
 .. autoclass:: Stephen
    :members:

@@ -7,7 +7,7 @@
 SchutzenbergerGraph
 ===================
 
-.. automodule:: stephen.schutzenbergergraph
+.. automodule:: step_hen.schutzenbergergraph
 
 .. autoclass:: SchutzenbergerGraph
    :members:

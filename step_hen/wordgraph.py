@@ -14,7 +14,7 @@ monoid.
 """
 
 from typing import Union, List, Tuple
-from stephen.presentation import MonoidPresentation
+from step_hen.presentation import MonoidPresentation
 
 
 class WordGraph:

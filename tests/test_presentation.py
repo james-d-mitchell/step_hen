@@ -7,7 +7,7 @@
 # The full license is in the file LICENSE, distributed with this software.
 
 import unittest
-from stephen import MonoidPresentation, InverseMonoidPresentation
+from step_hen import MonoidPresentation, InverseMonoidPresentation
 
 
 class TestPresentations(unittest.TestCase):

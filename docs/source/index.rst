@@ -4,15 +4,18 @@
 
    The full license is in the file LICENSE, distributed with this software.
 
-stephen
-=======
+step_hen
+========
 
-``stephen`` contains a rudimentary implementation of two algorithms of J. B.
+``step_hen`` contains a rudimentary implementation of two algorithms of J. B.
 Stephen :cite:`Stephen1987aa` and :cite:`Stephen1990aa` and one of Andrew
 Cutting :cite:`Cutting2001aa` for finitely presented monoids and inverse
 monoids in python3. These algorithms are can be used to check equality of a
 fixed word with any other word in a finitely presented monoid, or inverse
 monoid, and to compute the structure of a finitely presented inverse monoid. 
+
+``step_hen`` was written by [James D. Mitchell](jdbm.me) and [Maria
+Tsalakou](mariatsalakou.github.io).
 
 The implementation is rudimentary because it lacks many obvious optimisations
 and improvements, it is intended as a simple proof of concept.

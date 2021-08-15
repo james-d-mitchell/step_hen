@@ -12,7 +12,7 @@ version of Stephen's procedure for computing the size and number of
 :math:`\mathscr{R}`-classes of a finitely presented inverse monoid.
 """
 
-from stephen.presentation import MonoidPresentation, InverseMonoidPresentation
-from stephen.wordgraph import WordGraph
-from stephen.schutzenbergergraph import SchutzenbergerGraph
-from stephen.stephen import Stephen
+from step_hen.presentation import MonoidPresentation, InverseMonoidPresentation
+from step_hen.wordgraph import WordGraph
+from step_hen.schutzenbergergraph import SchutzenbergerGraph
+from step_hen.stephen import Stephen

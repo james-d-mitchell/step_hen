@@ -18,7 +18,7 @@ import sphinx_rtd_theme
 
 # -- Project information -----------------------------------------------------
 
-project = "stephen"
+project = "step_hen"
 copyright = "2021, James D. Mitchell and Maria Tsalakou"
 author = "James D. Mitchell and Maria Tsalakou"
 

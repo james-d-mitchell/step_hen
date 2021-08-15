@@ -7,7 +7,7 @@
 # The full license is in the file LICENSE, distributed with this software.
 
 import unittest
-from stephen import Stephen, InverseMonoidPresentation
+from step_hen import Stephen, InverseMonoidPresentation
 
 
 class TestStephen(unittest.TestCase):

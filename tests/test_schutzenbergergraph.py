@@ -7,7 +7,7 @@
 # The full license is in the file LICENSE, distributed with this software.
 
 import unittest
-from stephen import SchutzenbergerGraph, InverseMonoidPresentation
+from step_hen import SchutzenbergerGraph, InverseMonoidPresentation
 
 
 class TestSchutzenbergerGraph(unittest.TestCase):

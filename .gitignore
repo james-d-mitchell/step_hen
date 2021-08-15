@@ -4,5 +4,7 @@
 .ipynb_checkpoints
 .tox/*
 __pycache__/*
+build/
+dist/
 docs/build/*
 htmlcov/*
