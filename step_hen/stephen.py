@@ -12,6 +12,8 @@ version of Stephen's procedure for computing the size and number of
 :math:`\mathscr{R}`-classes of a finitely presented inverse monoid.
 """
 
+from typing import List
+
 from step_hen.schutzenbergergraph import (
     InverseMonoidPresentation,
     SchutzenbergerGraph,
@@ -140,3 +142,27 @@ class Stephen:
         """
         self.__run()
         return len(self._orbit)
+
+    def normal_forms(self) -> List[str]:
+        self.__run()
+        result = []
+        for schutz_graph in self._orbit:
+            result += schutz_graph.normal_forms()
+        return result
+
+    def schutzenberger_graphs(self) -> List[SchutzenbergerGraph]:
+        self.__run()
+        return self._orbit
+
+    def equal_to(self, word1, word2) -> bool:
+        return SchutzenbergerGraph(self._presn, word1).accepts(
+            word2
+        ) and SchutzenbergerGraph(self._presn, word2).accepts(word1)
+
+    def normal_form(self, word: str) -> str:
+        self.__run()
+        for sg in self.schutzenberger_graphs():
+            result = sg.normal_form(word)
+            if result is not None:
+                return result
+        assert False

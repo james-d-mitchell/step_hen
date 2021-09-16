@@ -7,7 +7,7 @@
 # The full license is in the file LICENSE, distributed with this software.
 
 import unittest
-from step_hen import SchutzenbergerGraph, InverseMonoidPresentation
+from step_hen import SchutzenbergerGraph, InverseMonoidPresentation, Stephen
 
 
 class TestSchutzenbergerGraph(unittest.TestCase):
@@ -124,3 +124,67 @@ class TestSchutzenbergerGraph(unittest.TestCase):
                 [None, None, None, None, None, 0],
             ],
         )
+
+    def test_normal_forms(self):
+        P = InverseMonoidPresentation()
+        P.set_alphabet("abc")
+        P.add_relation("aa", "a")
+        P.add_relation("abab", "aba")
+        P.add_relation("bb", "")
+        P.add_relation("cc", "")
+        P.add_relation("ac", "ca")
+        P.add_relation("bcb", "cbc")
+        S = Stephen(P)
+
+        for sg in S.schutzenberger_graphs():
+            for x in sg.normal_forms():
+                self.assertTrue(x in sg)
+
+        for w in S.normal_forms():
+            self.assertEqual(
+                sum((1 for x in S.normal_forms() if S.equal_to(x, w))), 1
+            )
+
+        for w in [
+            "",
+            "a",
+            "b",
+            "c",
+            "aa",
+            "ab",
+            "ac",
+            "ba",
+            "bb",
+            "bc",
+            "ca",
+            "cb",
+            "cc",
+            "aaa",
+            "aab",
+            "aac",
+            "aba",
+            "abb",
+            "abc",
+            "aca",
+            "acb",
+            "acc",
+            "baa",
+            "bab",
+            "bac",
+            "bba",
+            "bbb",
+            "bbc",
+            "bca",
+            "bcb",
+            "bcc",
+            "caa",
+            "cab",
+            "cac",
+            "cba",
+            "cbb",
+            "cbc",
+            "cca",
+            "ccb",
+            "ccc",
+        ]:
+            self.assertTrue(S.equal_to(S.normal_form(w), w))

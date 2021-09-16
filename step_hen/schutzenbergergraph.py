@@ -13,6 +13,8 @@ two words in the free monoid represent the same element of a finitely presented
 inverse monoid.
 """
 
+from typing import List
+from queue import SimpleQueue as queue
 from step_hen.presentation import InverseMonoidPresentation
 from step_hen.wordgraph import WordGraph
 
@@ -98,3 +100,36 @@ class SchutzenbergerGraph(WordGraph):
 
     def equal_to(self, word: str) -> None:
         pass
+
+    def normal_forms(self) -> List[str]:
+        self.run()
+        # (parent, letter, child)
+        normal_form = [
+            self.presn.string(self.rep + self.presn.inverse(self.rep))
+        ]
+        normal_form += [None] * (len(self.edges) - 1)
+
+        Q = queue()
+        root = 0
+        for letter, child in enumerate(self.edges[root]):
+            if child is not None:
+                Q.put((root, letter, child))
+        while not Q.empty():
+            parent, letter, child = Q.get()
+            normal_form[child] = normal_form[parent] + self.presn.char(letter)
+            for letter, grandchild in enumerate(self.edges[child]):
+                if grandchild is not None and normal_form[grandchild] is None:
+                    Q.put((child, letter, grandchild))
+
+        self._normal_forms = normal_form
+        return [x for x in normal_form if x is not None]
+
+    def normal_form(self, word: str) -> str:
+        self.run()
+        word = [self.presn.letter(letter) for letter in word]
+        last_node = self.path(0, word)
+        if last_node is not None:
+            self.normal_forms()
+            return self._normal_forms[last_node]
+        else:
+            return None

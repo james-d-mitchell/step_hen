@@ -17,7 +17,8 @@ implemented in this package in :py:class:`stephen.wordgraph.WordGraph`,
 
 # pylint: disable=bad-option-value, consider-using-f-string
 
-from typing import List
+import typing
+from typing import List, Union
 
 
 class MonoidPresentation:
@@ -136,12 +137,16 @@ class InverseMonoidPresentation(MonoidPresentation):
     def __init__(self):
         MonoidPresentation.__init__(self)
 
-    def inverse(self, letter: int) -> int:
+    def inverse(self, arg: Union[int, List[int]]) -> int:  # or word
         """
         Return the index representing the inverse of ``letter``.
         """
-        half = len(self.alphabet) // 2
-        return letter + half if letter < half else letter - half
+        if isinstance(arg, int):
+            half = len(self.alphabet) // 2
+            return arg + half if arg < half else arg - half
+        else:
+            assert isinstance(arg, list)
+            return [self.inverse(a) for a in reversed(arg)]
 
     def set_alphabet(self, alphabet: str) -> None:
         """
