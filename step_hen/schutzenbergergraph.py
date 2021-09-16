@@ -27,8 +27,8 @@ class SchutzenbergerGraph(WordGraph):
     Generators are represented by lower case letters and their inverses by
     upper case letters.
 
-    The alphabet is set using the method :py:meth:`set_alphabet`, and relations can be
-    added using :py:meth:`add_relation`.
+    The alphabet is set using the method :py:meth:`set_alphabet`, and relations
+    can be added using :py:meth:`add_relation`.
     """
 
     def __init__(self, presn: InverseMonoidPresentation, rep: str):
@@ -42,7 +42,10 @@ class SchutzenbergerGraph(WordGraph):
 
     def target(self, node: int, letter: int) -> int:
         result = WordGraph.target(self, node, letter)
-        self.edges[self.next_node - 1][self.presn.inverse(letter)] = node
+        inverse_letter = self.presn.inverse(letter)
+        inverse_edge = self.edges[result][inverse_letter]
+        assert inverse_edge is None or inverse_edge == node
+        self.edges[result][inverse_letter] = node
         return result
 
     def accepts(self, word: str) -> bool:

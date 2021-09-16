@@ -91,3 +91,36 @@ class TestSchutzenbergerGraph(unittest.TestCase):
         self.assertEqual(S.nodes, [0])
         self.assertEqual(S.edges[0], [0, 0, 0, 0])
         self.assertEqual(S.path(0, P.word("xyXyy")), 0)
+
+    def test_006(self):
+        """This test comes from page 111 of Stephen's paper, "Presentations of
+        inverse monoids."""
+
+        P = InverseMonoidPresentation()
+        P.set_alphabet("abc")
+        P.add_relation("ac", "ca")
+        P.add_relation("ab", "ba")
+        P.add_relation("bc", "cb")
+
+        w = "BaAbaBcAbC"
+        S = SchutzenbergerGraph(P, w)
+        S.run()
+        self.assertEqual(S.number_of_nodes(), 7)
+        self.assertEqual(
+            S.edges,
+            [
+                [3, None, 7, None, 1, None],
+                [2, 0, 6, None, None, None],
+                [None, 3, 5, 1, None, None],
+                [None, None, None, 0, 2, None],
+                [None, 3, 5, None, None, None],
+                [None, None, None, 6, None, 2],
+                [5, 7, None, None, None, 1],
+                [None, None, None, None, 6, 0],
+                [None, None, 7, None, None, None],
+                [None, None, None, None, 2, None],
+                [5, None, None, None, None, 1],
+                [None, None, None, 10, None, None],
+                [None, None, None, None, None, 0],
+            ],
+        )
