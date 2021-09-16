@@ -41,8 +41,7 @@ class MonoidPresentation:
         assert len(string) == 1
         if not string[0] in self.alphabet:
             raise ValueError(
-                "letter %s does not belong to the alphabet %s"
-                % (string, self.alphabet)
+                "letter %s does not belong to the alphabet %s" % (string, self.alphabet)
             )
         return self.alphabet.index(string)
 
@@ -85,12 +84,10 @@ class MonoidPresentation:
         if self.alphabet != "":
             raise ValueError("the alphabet cannot be set more than once")
 
-        letters = dict()
+        letters = {}
         for letter in alphabet:
             if letter in letters:
-                raise ValueError(
-                    "the argument <alphabet> must be duplicate free"
-                )
+                raise ValueError("the argument <alphabet> must be duplicate free")
             letters[letter] = True
         self.alphabet = alphabet
 
