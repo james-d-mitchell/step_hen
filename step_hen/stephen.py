@@ -48,24 +48,31 @@ class Stephen:
         self._presn = presn
         self._orbit = [SchutzenbergerGraph(presn, "")]
         self._finished = False
+        self._graph = []
+        # self._graph[i][j] will contain the position of the SchutzenbergerGraph
+        # in self._orbit containing the rep of self._orbit[i] left multiplied by
+        # letter[j]
 
     def __run(self) -> None:
         if self._finished:
             return
-        for sg1 in self._orbit:
+        for i, sg1 in enumerate(self._orbit):
             word = sg1.rep
+            self._graph.append([-1] * len(self._presn.alphabet))
             for letter in range(len(self._presn.alphabet)):
                 rep = [letter] + word
                 sg_xw = SchutzenbergerGraph(
                     self._presn, self._presn.string(rep)
                 )
-                for sg2 in self._orbit:
+                for k, sg2 in enumerate(self._orbit):
                     if (
                         self._presn.string(rep) in sg2
                         and self._presn.string(sg2.rep) in sg_xw
                     ):
+                        self._graph[i][letter] = k
                         break
                 else:
+                    self._graph[i][letter] = len(self._orbit)
                     self._orbit.append(sg_xw)
         self._finished = True
 

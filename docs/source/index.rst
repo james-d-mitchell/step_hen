@@ -15,7 +15,8 @@ fixed word with any other word in a finitely presented monoid, or inverse
 monoid, and to compute the structure of a finitely presented inverse monoid. 
 
 ``step_hen`` was written by `James D. Mitchell <jdbm.me>`_ and `Maria
-Tsalakou <mariatsalakou.github.io>`_.
+Tsalakou <mariatsalakou.github.io>`_. The development repo is on `GitHub
+<https://github.com/james-d-mitchell/step_hen>`_
 
 The implementation is rudimentary because it lacks many obvious optimisations
 and improvements, it is intended as a simple proof of concept.
