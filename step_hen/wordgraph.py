@@ -40,6 +40,8 @@ class WordGraph:
         self.kappa = []
         self.next_node = 1
         self.rep = [self.presn.letter(a) for a in rep]
+        self.generator = [None]
+        self.parent = [None]
         current_node = 0
         for letter in self.rep:
             current_node = self.target(current_node, letter)
@@ -66,8 +68,21 @@ class WordGraph:
             self.nodes.append(self.next_node)
             self.edges[node][letter] = self.next_node
             self.edges.append([None] * len(self.presn.alphabet))
+            self.parent.append(node)
+            self.generator.append(letter)
             self.next_node += 1
+
         return self.edges[node][letter]
+
+    def path_from_root_to(self, node: int) -> List[int]:
+        run()
+        if not node in self.nodes:
+            raise RuntimeError
+        result = []
+        while self.parent[node] is not None:
+            result.append(self.generator[node])
+            node = self.parent[node]
+        return result
 
     def last_node_on_path(
         self, root: int, word: Union[List[int], int]
@@ -193,4 +208,5 @@ class WordGraph:
         self.kappa = [
             [k, node1] if l == node2 else [k, l] for k, l in self.kappa
         ]
+        self.parent = [x if x != node2 else node1 for x in self.parent]
         self.nodes.remove(node2)

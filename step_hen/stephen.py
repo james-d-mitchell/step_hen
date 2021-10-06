@@ -159,6 +159,44 @@ class Stephen:
             word2
         ) and SchutzenbergerGraph(self._presn, word2).accepts(word1)
 
+    def __position(self, sg_index, node_index):
+        result = 0
+        for i in range(sg_index):
+            result += self.schutzenberger_graphs()[i].number_of_nodes()
+        return result + node_index
+
+    def __inverse_position(self, index: int):  # -> Tuple[int, int]:
+        sg_index = 0
+        while index > self._orbit[sg_index].number_of_nodes():
+            index -= self._orbit[sg_index].number_of_nodes()
+            sg_index += 1
+        return sg_index, index
+
+    def __schutzenberger_graph(self, index: int) -> SchutzenbergerGraph:
+        return self._orbit[self.__inverse_position(index)[0]]
+
+    def left_cayley_graph(self) -> List[List[int]]:
+        self.__run()
+        result = [[None] * self._presn.number_of_generators()] * self.size()
+
+        for i, sg in enumerate(self.schutzenberger_graphs()):
+            index = __position(i, 0)
+            for x in range(self._presn.number_of_generators()):
+                sg_index = self._graph[i][x]
+                result[index][x] = __position(sg_index,
+                        self._orbit[sg_index].nodes.index(self._orbit[sg_index].path(
+                    0, [x] + sg.rep
+                ))
+
+        for i, sg in enumerate(self.schutzenberger_graphs()):
+            for j, node in enumerate(sg.nodes):
+                k = __position(i, j)  # index of the element of the semigroup
+                # corresponding to the jth node in the ith Schutzenberger graph
+                for x in range(self._presn.number_of_generators()):
+                    result[k][x] = __schutzenbergergraph(result[rep][x]).path(
+                        sg.path_from_root_to(node)
+                    )
+
     def normal_form(self, word: str) -> str:
         self.__run()
         for sg in self.schutzenberger_graphs():
