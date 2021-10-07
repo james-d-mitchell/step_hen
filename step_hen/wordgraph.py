@@ -75,14 +75,14 @@ class WordGraph:
         return self.edges[node][letter]
 
     def path_from_root_to(self, node: int) -> List[int]:
-        run()
+        self.run()
         if not node in self.nodes:
             raise RuntimeError
         result = []
         while self.parent[node] is not None:
             result.append(self.generator[node])
             node = self.parent[node]
-        return result
+        return reversed(result)
 
     def last_node_on_path(
         self, root: int, word: Union[List[int], int]

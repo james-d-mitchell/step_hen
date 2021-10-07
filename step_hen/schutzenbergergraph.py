@@ -14,7 +14,12 @@ inverse monoid.
 """
 
 from typing import List
-from queue import SimpleQueue as queue
+
+try:
+    from queue import SimpleQueue as queue
+except ImportError:
+    from multiprocessing import SimpleQueue as queue
+
 from step_hen.presentation import InverseMonoidPresentation
 from step_hen.wordgraph import WordGraph
 
@@ -81,7 +86,7 @@ class SchutzenbergerGraph(WordGraph):
 
         Two words in the free monoid represent elements in the finitely
         presented inverse monoid, used to define this, are
-        :math:`\mathscr{R}`-related if and only if either word labels a path in
+        :math:`\mathscr{R}`-related if and only if both word labels a path in
         the Schutzenberger graph of the other.
 
         :param word: The word.

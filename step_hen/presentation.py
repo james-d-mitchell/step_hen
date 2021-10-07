@@ -145,7 +145,9 @@ class InverseMonoidPresentation(MonoidPresentation):
             half = len(self.alphabet) // 2
             return arg + half if arg < half else arg - half
         else:
-            assert isinstance(arg, list)
+            # assert isinstance(arg, list)
+            if not isinstance(arg, list):
+                arg = list(arg)
             return [self.inverse(a) for a in reversed(arg)]
 
     def set_alphabet(self, alphabet: str) -> None:
