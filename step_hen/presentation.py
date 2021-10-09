@@ -15,7 +15,9 @@ implemented in this package in :py:class:`stephen.wordgraph.WordGraph`,
 :py:class:`stephen.Stephen`.
 """
 
-import typing
+# pylint: disable=bad-option-value, consider-using-f-string
+
+from typing import List
 
 
 class MonoidPresentation:
@@ -41,7 +43,8 @@ class MonoidPresentation:
         assert len(string) == 1
         if not string[0] in self.alphabet:
             raise ValueError(
-                "letter %s does not belong to the alphabet %s" % (string, self.alphabet)
+                "letter %s does not belong to the alphabet %s"
+                % (string, self.alphabet)
             )
         return self.alphabet.index(string)
 
@@ -54,13 +57,13 @@ class MonoidPresentation:
         assert index < len(self.alphabet)
         return self.alphabet[index]
 
-    def word(self, string: str) -> typing.List[int]:
+    def word(self, string: str) -> List[int]:
         """
         Converts a string to the corresponding list of ints.
         """
         return [self.letter(x) for x in string]
 
-    def string(self, word: typing.List[int]) -> str:
+    def string(self, word: List[int]) -> str:
         """
         Converts a list of ints to the corresponding string.
         """
@@ -87,7 +90,9 @@ class MonoidPresentation:
         letters = {}
         for letter in alphabet:
             if letter in letters:
-                raise ValueError("the argument <alphabet> must be duplicate free")
+                raise ValueError(
+                    "the argument <alphabet> must be duplicate free"
+                )
             letters[letter] = True
         self.alphabet = alphabet
 

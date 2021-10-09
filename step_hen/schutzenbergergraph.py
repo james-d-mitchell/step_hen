@@ -13,7 +13,6 @@ two words in the free monoid represent the same element of a finitely presented
 inverse monoid.
 """
 
-from typing import List
 from step_hen.presentation import InverseMonoidPresentation
 from step_hen.wordgraph import WordGraph
 

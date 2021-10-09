@@ -4,8 +4,8 @@
 
    The full license is in the file LICENSE, distributed with this software.
 
-step_hen
-========
+step_hen - Version 0.0.2
+========================
 
 ``step_hen`` contains a rudimentary implementation of two algorithms of J. B.
 Stephen :cite:`Stephen1987aa` and :cite:`Stephen1990aa` and one of Andrew

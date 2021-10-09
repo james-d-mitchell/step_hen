@@ -21,7 +21,8 @@ import sphinx_rtd_theme
 project = "step_hen"
 copyright = "2021, James D. Mitchell and Maria Tsalakou"
 author = "James D. Mitchell and Maria Tsalakou"
-
+version = u"0.0.2"
+release = u"0.0.2"
 
 # -- General configuration ---------------------------------------------------
 
