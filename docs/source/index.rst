@@ -4,7 +4,7 @@
 
    The full license is in the file LICENSE, distributed with this software.
 
-step_hen - Version 0.0.2
+step_hen - Version 0.0.3
 ========================
 
 ``step_hen`` contains a rudimentary implementation of two algorithms of J. B.
@@ -20,6 +20,11 @@ Tsalakou <mariatsalakou.github.io>`_. The development repo is on `GitHub
 
 The implementation is rudimentary because it lacks many obvious optimisations
 and improvements, it is intended as a simple proof of concept.
+
+.. toctree::
+   :maxdepth: 1
+
+   changelog
 
 .. toctree::
    :maxdepth: 2

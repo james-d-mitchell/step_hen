@@ -13,7 +13,11 @@ coverage:
 doc: 
 	@cd docs && make html
 
-clean:
+clean-doc:
+	rm -rf docs/build
+
+clean: clean-doc
+	rm -rf *.egg-info 
 	rm -rf docs/build
 	rm -rf build/
 	rm -rf __pycache__/
@@ -23,7 +27,6 @@ clean:
 	rm -rf .tox
 	rm -rf tests/__pycache__
 	rm -rf step_hen/__pycache__
-
 
 lint: 
 	pylint step_hen/*.py

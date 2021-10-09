@@ -14,7 +14,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="step_hen",
-    version="0.0.1",
+    version="0.0.3",
     url="https://github.com/james-d-mitchell/step_hen",
     license="GPL3",
     author="James D. Mitchell, Maria Tsalakou",
