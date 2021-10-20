@@ -173,7 +173,7 @@ class Stephen:
 
     def normal_forms(self) -> List[str]:
         self.__run()
-        D = make_ActionDigraph(self.left_cayley_graph())
+        D = self.right_cayley_graph()
         return [
             self._presn.string(next(D.pstislo_iterator(0, n, 0, 100000)))
             for n in range(D.number_of_nodes())
@@ -202,10 +202,9 @@ class Stephen:
             result += self.schutzenberger_graphs()[i].number_of_nodes()
         return result + node_index
 
-    def left_cayley_graph(self) -> List[List[int]]:
+    def left_cayley_graph(self) -> ActionDigraph:
         self.__run()
         m = len(self._presn.alphabet)
-
         result = [[None] * m for _ in range(self.size())]
 
         for i, sg in enumerate(self.schutzenberger_graphs()):
@@ -227,11 +226,28 @@ class Stephen:
                     result[k][x] = self._position(
                         l, sg_l.nodes.index(sg_l.path(u, v))
                     )
-        return result
         return make_ActionDigraph(result)
 
-    # TODO right_cayley_graph
-    # TODO d_classes, number_of_d_classes
+    def right_cayley_graph(self) -> ActionDigraph:
+        left = self.left_cayley_graph()
+        m = len(self._presn.alphabet)
+        result = [[None] * m for _ in range(self.size())]
+        for i in range(self.size()):
+            w = next(left.pstislo_iterator(0, i, 0, 100000))[::-1]
+            for x in range(m):
+                u = w + [x]
+                result[i][x] = follow_path(left, 0, list(reversed(u)))
+        return make_ActionDigraph(result)
+
+    def number_of_d_classes(self) -> int:
+        m = len(self._presn.alphabet)
+        union = ActionDigraph(self.left_cayley_graph())
+        union.add_to_out_degree(m)
+        right = self.right_cayley_graph()
+        for v in range(right.number_of_nodes()):
+            for x in range(m):
+                union.add_edge(v, right.neighbor(v, x), x + m)
+        return union.number_of_scc()
 
     def normal_form(self, word: str) -> str:
         #  TODO redo this
