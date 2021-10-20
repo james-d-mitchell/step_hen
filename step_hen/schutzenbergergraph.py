@@ -86,7 +86,7 @@ class SchutzenbergerGraph(WordGraph):
 
         Two words in the free monoid represent elements in the finitely
         presented inverse monoid, used to define this, are
-        :math:`\mathscr{R}`-related if and only if both word labels a path in
+        :math:`\mathscr{R}`-related if and only if both words labels a path in
         the Schutzenberger graph of the other.
 
         :param word: The word.
@@ -106,6 +106,7 @@ class SchutzenbergerGraph(WordGraph):
     def equal_to(self, word: str) -> None:
         pass
 
+    # TODO delete
     def normal_forms(self) -> List[str]:
         self.run()
         # (parent, letter, child)
@@ -129,6 +130,7 @@ class SchutzenbergerGraph(WordGraph):
         self._normal_forms = normal_form
         return [x for x in normal_form if x is not None]
 
+    # TODO delete
     def normal_form(self, word: str) -> str:
         self.run()
         word = [self.presn.letter(letter) for letter in word]

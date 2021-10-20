@@ -172,12 +172,22 @@ class Stephen:
         return len(self._orbit)
 
     def normal_forms(self) -> List[str]:
-        self.__run()
         D = self.right_cayley_graph()
         return [
             self._presn.string(next(D.pstislo_iterator(0, n, 0, 100000)))
             for n in range(D.number_of_nodes())
         ]
+
+    def normal_forms_by_r_class(self) -> List[List[str]]:
+        # FIXME this is fragile
+        nf = self.normal_forms()
+        offset = 0
+        result = []
+        for sg in self.schutzenberger_graphs():
+            result.append(nf[offset : offset + sg.number_of_nodes()])
+            result[-1].sort(key=lambda s: (len(s), s))
+            offset += sg.number_of_nodes()
+        return result
 
     def schutzenberger_graphs(self) -> List[SchutzenbergerGraph]:
         self.__run()
@@ -250,10 +260,6 @@ class Stephen:
         return union.number_of_scc()
 
     def normal_form(self, word: str) -> str:
-        #  TODO redo this
-        self.__run()
-        for sg in self.schutzenberger_graphs():
-            result = sg.normal_form(word)
-            if result is not None:
-                return result
-        assert False
+        D = self.right_cayley_graph()
+        n = follow_path(D, 0, self._presn.word(word))
+        return self._presn.string(next(D.pstislo_iterator(0, n, 0, 100000)))
