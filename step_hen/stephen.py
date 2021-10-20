@@ -222,10 +222,12 @@ class Stephen:
                     u = sg_l.path(
                         0, [x] + sg.rep
                     )  # node in the sg_l corresponding to x sg.rep
-                    v = self._presn.inverse(sg.path_from_root_to(node))
+                    assert sg.path(0, list(sg.path_from_root_to(node))) == node
+                    v = list(sg.path_from_root_to(node))
                     result[k][x] = self._position(
                         l, sg_l.nodes.index(sg_l.path(u, v))
                     )
+        return result
         return make_ActionDigraph(result)
 
     # TODO right_cayley_graph
