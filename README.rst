@@ -1,3 +1,6 @@
+.. image:: /docs/source/images/logo.png
+ :align: center
+
 .. image:: https://mybinder.org/badge_logo.svg
  :target: https://mybinder.org/v2/gh/james-d-mitchell/step_hen/HEAD?filepath=demo.ipynb
 

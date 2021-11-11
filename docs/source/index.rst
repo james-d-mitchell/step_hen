@@ -4,6 +4,8 @@
 
    The full license is in the file LICENSE, distributed with this software.
 
+.. image:: images/logo.png
+
 step_hen - Version 0.0.3
 ========================
 
